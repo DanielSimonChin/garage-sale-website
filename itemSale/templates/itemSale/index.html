@@ -1,0 +1,13 @@
+{% if item_list %}
+<ul>
+{% for item in item_list %}
+<li><a href="/itemSale/{{ item.id }}/">
+{{ item.title}}
+<br>
+{{ item.image }}
+</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No Items for sale.</p>
+{% endif %}
