@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Vente de Garage </title>
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'itemSale/style.css' %}">
+	</head>
+	<body>
+		<header>
+			<div class="nav">
+				<a class="home" href="/itemSale/"> Home </a>
+				<a class="signIn"> Sign In </a>
+			</div>
+		</header>
+	{% block content %}
+
+	{% endblock %}
+	</body>
+</html>

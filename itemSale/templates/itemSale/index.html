@@ -1,13 +1,19 @@
+{% extends "./base.html" %}
+{% block content %}
+<section class="content">
 {% if item_list %}
-<ul>
 {% for item in item_list %}
-<li><a href="/itemSale/{{ item.id }}/">
+<a href="/itemSale/{{ item.id }}/">
+<section class="item">
+<h1>
 {{ item.title}}
-<br>
+</h1>
 {{ item.image }}
-</a></li>
+</section>
+</a>
 {% endfor %}
-</ul>
 {% else %}
 <p>No Items for sale.</p>
 {% endif %}
+</section>
+{% endblock %}
