@@ -59,5 +59,11 @@ def logout_view(request):
     return redirect('/authentication/')
 
 
+def login_view(request):
+    context = {}
+    user = request.user
+    
+
+
 
 
