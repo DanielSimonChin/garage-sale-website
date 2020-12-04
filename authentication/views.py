@@ -4,10 +4,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse
 from database.models import User,Item,Comment,Reply
-from .forms import RegisterForm
+from .forms import RegisterForm,UserAuthenticationForm,AccountEditForm
 from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate,logout
-
+from django.contrib.auth.forms import UserChangeForm
 
 
 #The view for the index which contains all the listed items on the site with their title and image
@@ -63,7 +63,56 @@ def login_view(request):
     context = {}
     user = request.user
     
+    if user.is_authenticated:
+        return redirect('/authentication/')
+    
+    if request.POST:
+        form = UserAuthenticationForm(request.POST)
+        
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email,password=password)
+            
+            if user:
+                login(request,user)
+                return redirect('/authentication/')
+    else:
+        form = UserAuthenticationForm()
+        
+    context['loginForm'] = form
+    return render(request,'authentication/login.html', context)
 
+# def account_view(request):
+#     if not request.user.is_authenticated:
+#         return redirect('authentication/login.html')
+    
+#     context = {}
+#     if request.POST:
+#         form = AccontUpdateForm(request.POST, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#     else:
+#         form = AccontUpdateForm(initial = {"email": request.user.email,"username": request.user.username,"first_name": request.user.first_name,"last_name": request.user.last_name,"date_of_birth":request.user.date_of_birth})
+    
+#     context['account_form'] = form
+#     return render(request,'authentication/account.html',context)
+
+def account_view(request):
+    context = {}
+    if(request.method == 'POST'):
+        form = AccountEditForm(request.POST,instance=request.user)
+        
+        if form.is_valid():
+            #make the changes to the user
+            form.save()
+            
+            return redirect('/authentication/')
+    else:
+        form = AccountEditForm(instance = request.user)
+        context['account_form'] = form
+		
+    return render(request,'authentication/account.html', context)
 
 
 

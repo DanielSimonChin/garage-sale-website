@@ -19,10 +19,14 @@ from django.urls import path,include
 from authentication.views import(
 	register,
     logout_view,
+    login_view,
+    account_view,
 )
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
 	path('authentication/', include('authentication.urls'),name='home'),
 	path('register/',register,name='register'),
     path('logout/',logout_view,name='logout'),
+    path('login/',login_view,name='login'),
+    path('account/',account_view,name='account'),
 ]
