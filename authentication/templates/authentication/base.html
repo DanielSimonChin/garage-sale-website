@@ -14,8 +14,7 @@
     			
     			{% if user.is_authenticated %} 
         			<a class="signIn" href="{% url 'account' %}">Account</a>
-            		<a class="signIn" href="{% url 'logout' %}"> Logout </a>   
-                	<p class="signIn">Hello {{user.username}}!</p>
+            		<a class="signIn" href="{% url 'logout' %}"> Logout</a>   
             		{% if user.is_admin or user.is_superuser %}
                         <a class="home" href="/admin"> Admin Page </a>
                     {% endif %}
@@ -24,6 +23,11 @@
                     <a class="signIn" href="{% url 'login' %}">Login</a>
                 {% endif %}
 			</div>
+			
+			{% if user.is_authenticated %} 
+    			<h1><a>Hello, {{user.username}} </a></h1>
+			{% endif %}
+			
 		</header>
 	{% block content %}
 
