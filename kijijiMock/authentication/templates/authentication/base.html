@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Vente de Garage </title>
+		
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'authentication/style.css' %}">
+	</head>
+	<body>
+		<header>
+			<div class="nav">
+    			<a class="home" href="/authentication/"> Home </a>
+    			{% if user.is_authenticated %}        			
+            		<a class="signIn" href="{% url 'logout' %}"> Logout </a>   
+            		{% if user.is_admin or user.is_superuser %}
+                        <a class="home" href="/admin"> Admin Page </a>
+                    {% endif %}
+            	{% else %}  
+                    <a class="signIn"> Sign In </a>
+                
+                    <a class="signIn" href="{% url 'register' %}">Register</a>
+                {% endif %}
+			</div>
+		</header>
+	{% block content %}
+
+	{% endblock %}
+	</body>
+</html>
