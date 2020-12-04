@@ -27,6 +27,8 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         #Excludes any items that aren't published yet.
         return Item.objects.filter(pub_date__lte=timezone.now())
+ 
+       
 
 #Function view for whenever the user clicks on Register nav item.
 def register(request):
