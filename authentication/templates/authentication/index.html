@@ -3,7 +3,7 @@
 <section class="content">
    {% if item_list %}
    {% for item in item_list %}
-   <a href="/authentication/{{ item.id }}/">
+   <a href="{{ item.id }}/">
       <section class="item">
          <h1>
             {{ item.title}}

@@ -27,7 +27,6 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         #Excludes any items that aren't published yet.
         return Item.objects.filter(pub_date__lte=timezone.now())
- 
 
 #Function view for whenever the user clicks on Register nav item.
 def register(request):
@@ -43,7 +42,7 @@ def register(request):
             account = authenticate(email=email,password=raw_password)
             #login to the recently created account
             login(request,account)
-            return redirect('/authentication/')
+            return redirect('/')
         else:
             context['registration_form'] = form
     #
@@ -57,7 +56,7 @@ def register(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('/authentication/')
+    return redirect('/')
 
 
 def login_view(request):
@@ -65,7 +64,7 @@ def login_view(request):
     user = request.user
     
     if user.is_authenticated:
-        return redirect('/authentication/')
+        return redirect('/')
     
     if request.POST:
         form = UserAuthenticationForm(request.POST)
@@ -77,27 +76,14 @@ def login_view(request):
             
             if user:
                 login(request,user)
-                return redirect('/authentication/')
+                return redirect('/')
     else:
         form = UserAuthenticationForm()
         
     context['loginForm'] = form
     return render(request,'authentication/login.html', context)
-
-# def account_view(request):
-#     if not request.user.is_authenticated:
-#         return redirect('authentication/login.html')
-    
-#     context = {}
-#     if request.POST:
-#         form = AccontUpdateForm(request.POST, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#     else:
-#         form = AccontUpdateForm(initial = {"email": request.user.email,"username": request.user.username,"first_name": request.user.first_name,"last_name": request.user.last_name,"date_of_birth":request.user.date_of_birth})
-    
-#     context['account_form'] = form
-#     return render(request,'authentication/account.html',context)
+ 
+   
 
 def account_view(request):
     context = {}
@@ -108,7 +94,7 @@ def account_view(request):
             #make the changes to the user
             form.save()
             
-            return redirect('/authentication/')
+            return redirect('/')
     else:
         form = AccountEditForm(instance = request.user)
         context['account_form'] = form
@@ -125,7 +111,7 @@ def password_view(request):
             form.save()
             update_session_auth_hash(request, form.user)
             
-            return redirect('/authentication/')
+            return redirect('/')
         else:
             return redirect('/password/')
     else:

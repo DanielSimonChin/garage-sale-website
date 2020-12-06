@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <section class="itemDetail">
-   <h1> {{ item.title }} </h1>
+   <h1> Owner: {{item.owner }} <br> Item: {{ item.title }} </h1>
    <br>
    <img src="/static/authentication/{{item.filename}} " />
    <br>
@@ -13,5 +13,31 @@
    <br>
    Price:
    {{ item.price }} $
+</section>
+
+<section class="comments">
+	<h2> Comments </h2>
+	<button href="#"> Add comment </button>
+	<!-- Check if there are comments -->
+	{% if not item.comments.all %}
+		<p> No comments, Add one </p>
+	{% else %}
+		<!-- If there are comment display -->
+		{%for comment in item.comments.all%}
+			<section class="comments">
+			<h3> {{ comment.author }} -  {{ comment.pub_date }} </h3>
+			<p> {{ comment.text }}  <br><br> Replies:</p>
+			
+			{% if comment.replies.all %}
+				{%for reply in comment.replies.all%}
+					<section class="comments">
+						<h4> {{ reply.author }} - {{ reply.pub_date }} </h4>
+						<p> {{ reply.text }}  </p>
+					</section>
+				{%endfor%}
+			{%endif%}
+			</section>
+		{% endfor %}
+{%endif%}
 </section>
 {% endblock %}

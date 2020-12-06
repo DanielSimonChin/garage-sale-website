@@ -22,10 +22,11 @@ from authentication.views import(
     login_view,
     account_view,
     password_view,
+    AddCommentView,
 )
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
-	path('authentication/', include('authentication.urls'),name='home'),
+	path('', include('authentication.urls'),name='home'),
 	path('register/',register,name='register'),
     path('logout/',logout_view,name='logout'),
     path('login/',login_view,name='login'),

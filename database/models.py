@@ -105,7 +105,7 @@ class Item(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, related_name="comments", on_delete=models.CASCADE)
     text = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(default=timezone.now)
     def __str__(self):
@@ -113,7 +113,7 @@ class Comment(models.Model):
     
 class Reply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comment , on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment , related_name="replies", on_delete=models.CASCADE)
     text = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(default=timezone.now)
     def __str__(self):

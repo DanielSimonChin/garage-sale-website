@@ -27,6 +27,15 @@ section
 	width:100%;
 }
 
+.comments
+{
+	border:solid;
+	border-color:#302827; 
+	padding:1%; 
+	margin-top:1%;
+	color:white;
+}
+
 .itemDetail
 {
 	border:solid;
