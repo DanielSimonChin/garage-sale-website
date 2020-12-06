@@ -2,6 +2,7 @@ import datetime
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import os 
 
 #Managing how users are saved
 class MyUserManager(BaseUserManager):
@@ -98,6 +99,9 @@ class Item(models.Model):
     pub_date = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.title
+    
+    def filename(self):
+        return os.path.basename(self.image.name)
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
