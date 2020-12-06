@@ -1,21 +1,19 @@
 {% extends "./base.html" %}
 {% block content %}
-
 <section class="content">
-{% if item_list %}
-{% for item in item_list %}
-<a href="/authentication/{{ item.id }}/">
-<section class="item">
-<h1>
-{{ item.title}}
-</h1>
-<img src="/static/authentication/{{item.filename}} " />
-</section>
-</a>
-{% endfor %}
-{% else %}
-<p>No Items for sale.</p>
-{% endif %}
-
+   {% if item_list %}
+   {% for item in item_list %}
+   <a href="/authentication/{{ item.id }}/">
+      <section class="item">
+         <h1>
+            {{ item.title}}
+         </h1>
+         <img class="indexImages" src="/static/authentication/{{item.filename}} " />
+      </section>
+   </a>
+   {% endfor %}
+   {% else %}
+   <p>No Items for sale.</p>
+   {% endif %}
 </section>
 {% endblock %}

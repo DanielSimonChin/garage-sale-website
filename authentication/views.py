@@ -7,8 +7,8 @@ from database.models import User,Item,Comment,Reply
 from .forms import RegisterForm,UserAuthenticationForm,AccountEditForm
 from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate,logout
-from django.contrib.auth.forms import UserChangeForm
-
+from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 #The view for the index which contains all the listed items on the site with their title and image
 class IndexView(generic.ListView):
@@ -116,5 +116,23 @@ def account_view(request):
 		
     return render(request,'authentication/account.html', context)
 
+def password_view(request):
+    context = {}
+    if(request.method == 'POST'):
+        form = PasswordChangeForm(data=request.POST,user=request.user)
+        
+        if form.is_valid():
+            #make the changes to the user
+            form.save()
+            update_session_auth_hash(request, form.user)
+            
+            return redirect('/authentication/')
+        else:
+            return redirect('/password/')
+    else:
+        form = PasswordChangeForm(user = request.user)
+        context['password_form'] = form
+		
+    return render(request,'authentication/password_change.html', context)
 
 

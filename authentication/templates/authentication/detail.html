@@ -2,16 +2,16 @@
 {% load static %}
 {% block content %}
 <section class="itemDetail">
-<h1> {{ item.title }} </h1>
-<br>
-<img src="/static/authentication/{{item.filename}} " />
-<br>
-<p>
-Description:
-{{ item.description }}
-</p>
-<br>
-Price:
-{{ item.price }} $
+   <h1> {{ item.title }} </h1>
+   <br>
+   <img src="/static/authentication/{{item.filename}} " />
+   <br>
+   <p>
+      Description:
+      {{ item.description }}
+   </p>
+   <br>
+   Price:
+   {{ item.price }} $
 </section>
 {% endblock %}
