@@ -22,7 +22,6 @@ from authentication.views import(
     login_view,
     account_view,
     password_view,
-    AddCommentView,
 )
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
