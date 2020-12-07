@@ -1,0 +1,31 @@
+{% extends './base.html' %}
+{%block content%}
+
+<h1>Comment on Item</h1>
+
+<form method="POST">
+{% csrf_token %}
+{% for field in comment_form %}
+		<p>
+            {{field.label_tag}}
+            {{field}}
+            
+            {%if field.help_text %}
+                <small style = "color:grey;">{{field.help_text}}</small>
+            {% endif %}
+		</p>
+{% endfor %}
+{% for field in comment_form %}
+        {% for error in field.errors %}
+                <p style = "color:red;">{{error}}</p>
+        {% endfor %}
+{% endfor %}
+{% if comment_form.non_field_errors %}
+        <div style="color:red;">
+            <p>{{comment_form.non_field_errors}}</p>
+        </div>
+{% endif %}
+<button type="sumbit">Post Comment </button>
+</form>
+
+{% endblock content %}

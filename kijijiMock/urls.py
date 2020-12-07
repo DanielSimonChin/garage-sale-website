@@ -22,6 +22,8 @@ from authentication.views import(
     login_view,
     account_view,
     password_view,
+    comment,
+    reply,
 )
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
@@ -31,4 +33,6 @@ urlpatterns = [
     path('login/',login_view,name='login'),
     path('account/',account_view,name='account'),
     path('password/',password_view,name='password'),
+    path('<int:pk>/comment/', comment, name ='add_comment'),
+    path('<int:pk>/comment/reply', reply, name ='add_reply'),
 ]

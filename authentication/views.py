@@ -1,10 +1,10 @@
 from django.views import generic
 from django.utils import timezone
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from database.models import User,Item,Comment,Reply
-from .forms import RegisterForm,UserAuthenticationForm,AccountEditForm
+from .forms import RegisterForm,UserAuthenticationForm,AccountEditForm, CommentForm, ReplyForm
 from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
@@ -27,7 +27,48 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         #Excludes any items that aren't published yet.
         return Item.objects.filter(pub_date__lte=timezone.now())
+        
 
+def comment(request, pk):
+    if not request.user.is_authenticated:
+        return redircect("login")
+    
+    context = {}
+    form = CommentForm(request.POST, instance=request.user)
+    
+    if form.is_valid():
+        text = request.POST.get('text')
+        item = Item.objects.get(id = pk)
+        comment = Comment.objects.create(item = item,author=request.user,text=text)
+        if comment:
+            comment.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        
+    context['comment_form'] = form
+    
+    return render(request, 'authentication/comment.html', context)
+    
+def reply(request, pk):
+    if not request.user.is_authenticated:
+        return redircect("login")
+    
+    context = {}
+    form = ReplyForm(request.POST, instance=request.user)
+    
+    if form.is_valid():
+        text = request.POST.get('text')
+        comment = Comment.objects.get(id = pk)
+        reply = Reply.objects.create(comment = comment,author=request.user,text=text)
+        if reply:
+            reply.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        
+    context['reply_form'] = form
+    
+    return render(request, 'authentication/reply.html', context)
+    
 #Function view for whenever the user clicks on Register nav item.
 def register(request):
     context = {}
@@ -119,5 +160,4 @@ def password_view(request):
         context['password_form'] = form
 		
     return render(request,'authentication/password_change.html', context)
-
 

@@ -18,9 +18,9 @@
 <section class="comments">
 	<h2> Comments </h2>
 	{% if user.is_authenticated %} 
-	<button href="#"> Comment </button>
+	<a href="{% url 'add_comment' item.pk %}"> <button> Comment </button> </a>
 	{% else %}
-	<button href="{% url 'account' %}"> Sign in to interact </button>
+	<button href="{% url 'account'%}"> Sign in to interact </button>
 	{% endif %}
 	<!-- Check if there are comments -->
 	{% if not item.comments.all %}
@@ -32,7 +32,7 @@
 			<h3> {{ comment.author }} -  {{ comment.pub_date }} </h3>
 			<p> {{ comment.text }}  <br><br> Replies:</p>
 			{% if user.is_authenticated %} 
-			<button href="#"> Reply </button>
+			 <a href="{% url 'add_reply' comment.pk %}"> <button> Reply </button> </a>
 			{% endif %}
 			{% if comment.replies.all %}
 				{%for reply in comment.replies.all%}
