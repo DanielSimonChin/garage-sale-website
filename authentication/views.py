@@ -1,6 +1,6 @@
 from django.views import generic
 from django.utils import timezone
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from database.models import User,Item,Comment,Reply
@@ -31,7 +31,7 @@ class DetailView(generic.DetailView):
 
 def comment(request, pk):
     if not request.user.is_authenticated:
-        return redircect("login")
+        return redirect("login")
     
     context = {}
     form = CommentForm(request.POST, instance=request.user)
@@ -52,7 +52,7 @@ def comment(request, pk):
     
 def reply(request, pk):
     if not request.user.is_authenticated:
-        return redircect("login")
+        return redirect("login")
     
     context = {}
     form = ReplyForm(request.POST, instance=request.user)
@@ -97,10 +97,14 @@ def register(request):
     
     return render(request,'authentication/register.html', context)
 
+def like(request, pk):
+    item = get_object_or_404(Item, id=pk)
+    item.likes.add(request.user)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def logout_view(request):
     logout(request)
-    return redirect('/')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def login_view(request):

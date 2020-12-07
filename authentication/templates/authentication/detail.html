@@ -13,6 +13,32 @@
    <br>
    Price:
    {{ item.price }} $
+   <br><br>
+   
+   {% if user.is_authenticated %}  
+   <form action="{% url 'like_item' item.pk %}" method="POST"> 
+   {% csrf_token %}
+		<button type="sumbit", name="item_pk",value="{{ item.pk }}">
+		{%if item.total_likes == 1 %}
+			{{item.total_likes}} like 
+	    {% elif item.total_likes == 0 %}
+			0 likes 
+		{% else %}
+			{{item.total_likes }} likes
+	    {% endif %}
+		</button>
+	</form> 
+   {% else %}
+		<p>
+	   {%if item.total_likes == 1 %}
+			{{item.total_likes}} like
+	   {%elif item.total_likes == 0 %}
+			0 likes 
+		{% else %}
+			{{item.total_likes}} likes 
+	   {% endif %}
+	   </p>
+   {% endif %}
 </section>
 
 <section class="comments">
@@ -20,7 +46,7 @@
 	{% if user.is_authenticated %} 
 	<a href="{% url 'add_comment' item.pk %}"> <button> Comment </button> </a>
 	{% else %}
-	<button href="{% url 'account'%}"> Sign in to interact </button>
+	<a href="{% url 'login' %}"> <button> Sign in to interact </button> </a>
 	{% endif %}
 	<!-- Check if there are comments -->
 	{% if not item.comments.all %}

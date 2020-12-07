@@ -94,11 +94,15 @@ class Item(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='authentication/static/authentication')
+    likes = models.ManyToManyField(User, related_name ='item_post', default = 0)
     price = models.DecimalField(max_digits=11, decimal_places=2)
     description = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.title
+        
+    def total_likes(self):
+        return self.likes.count()
     
     def filename(self):
         return os.path.basename(self.image.name)
