@@ -18,7 +18,7 @@ class RegisterForm(UserCreationForm):
 class AccountEditForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('email','username','first_name','last_name','date_of_birth')
+        fields = ('avatar','email','username','first_name','last_name','date_of_birth')
         
 
 class UserAuthenticationForm(forms.ModelForm):

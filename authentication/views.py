@@ -138,7 +138,7 @@ def login_view(request):
 def account_view(request):
     context = {}
     if(request.method == 'POST'):
-        form = AccountEditForm(request.POST,instance=request.user)
+        form = AccountEditForm(request.POST,request.FILES,instance=request.user)
         
         if form.is_valid():
             #make the changes to the user

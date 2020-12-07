@@ -7,7 +7,7 @@ import os
 #Managing how users are saved
 class MyUserManager(BaseUserManager):
     #Manage creation of regular user
-    def create_user(self, email, username,first_name,last_name,date_of_birth, password=None):
+    def create_user(self, email, username,first_name,last_name,date_of_birth, password=None, avatar=None):
         if not email:
             raise ValueError("User must have an email address")
         if not username:
@@ -32,7 +32,7 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
     #Mange regular user
-    def create_superuser(self, email, username,first_name,last_name,date_of_birth,password):
+    def create_superuser(self, email, username,first_name,last_name,date_of_birth,password, avatar=None):
         user = self.create_user(
                email = self.normalize_email(email),
                password = password,
@@ -47,9 +47,6 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
         
-    
-    
-    
     
 # Create your models here.
 class User(AbstractBaseUser):
@@ -71,6 +68,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     date_of_birth = models.DateField(max_length=8)
     balance = models.DecimalField(default=1000,max_digits=11, decimal_places=2)
+    avatar = models.FileField(null=True,blank=True,upload_to='authentication/static/authentication')
     
     #Defines what filed is used to log in
     USERNAME_FIELD = 'email'
@@ -89,6 +87,9 @@ class User(AbstractBaseUser):
     
     def has_module_perms(self, app_label):
         return True
+    
+    def filename(self):
+        return os.path.basename(self.avatar.name)
     
 class Item(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)

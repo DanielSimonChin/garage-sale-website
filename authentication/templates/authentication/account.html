@@ -3,10 +3,17 @@
 
 <h1>Account</h1>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
 {% csrf_token %}
     {% for field in account_form %}
         <p>
+			{% if field.name == 'avatar' and user.avatar.name %}
+      
+                <img src="/static/authentication/{{user.filename}}"/>
+            {% endif %}
+
+            <br><br>
+			
             {{field.label_tag}}
             {{field}}
             
