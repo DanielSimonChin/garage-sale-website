@@ -10,24 +10,6 @@ from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
-#The view for the index which contains all the listed items on the site with their title and image
-class IndexView(generic.ListView):
-    template_name = 'authentication/index.html'
-    context_object_name = 'item_list'
-    
-    #return all the items in order of publication date
-    def get_queryset(self):
-        return Item.objects.order_by('-pub_date')
-      
-#The view for the detail's page of every item
-class DetailView(generic.DetailView):
-    model = Item
-    template_name = 'authentication/detail.html'
-
-    def get_queryset(self):
-        #Excludes any items that aren't published yet.
-        return Item.objects.filter(pub_date__lte=timezone.now())
-        
 
 def comment(request, pk):
     if not request.user.is_authenticated:

@@ -26,9 +26,14 @@ from authentication.views import(
     reply,
     like,
 )
+
+from itemManagement.views import(
+    createItemView,
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
-	path('', include('authentication.urls'),name='home'),
+	path('', include('itemManagement.urls'),name='home'),
 	path('register/',register,name='register'),
     path('logout/',logout_view,name='logout'),
     path('login/',login_view,name='login'),
@@ -37,4 +42,5 @@ urlpatterns = [
     path('<int:pk>/comment/', comment, name ='add_comment'),
     path('<int:pk>/comment/reply/', reply, name ='add_reply'),
     path('<int:pk>/like/', like, name = 'like_item'),
+    path('create/',createItemView,name='itemCreate'),
 ]
