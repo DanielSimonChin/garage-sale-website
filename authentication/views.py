@@ -98,6 +98,8 @@ def register(request):
     return render(request,'authentication/register.html', context)
 
 def like(request, pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
     item = get_object_or_404(Item, id=pk)
     item.likes.add(request.user)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
