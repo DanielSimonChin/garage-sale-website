@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from .forms import itemCreateForm
+from .forms import itemCreateForm,UpdateItemForm
 
 # Create your views here.
 #The view for the index which contains all the listed items on the site with their title and image
@@ -30,24 +30,48 @@ class DetailView(generic.DetailView):
         return Item.objects.filter(pub_date__lte=timezone.now())
     
 def createItemView(request):
-    context = {}
+    form = itemCreateForm()
     if(request.method == 'POST'):
-        form = itemCreateForm(request.POST,instance=request.user)
+        form = itemCreateForm(request.POST,request.FILES)
         
         if form.is_valid():
-            user = User.objects.get(pk=request.user.pk)
-            title = request.POST.get('title')
-            image = request.POST.get('image')
-            description = request.POST.get('description')
-            price = request.POST.get('price')
+            item = form.save(commit=False)
             
-            item = Item.objects.create(user=user,title=title,image=image,price=price,description=description)
-
-            if item:
-                item.save()
-                return redirect('/')
-    else:
-        form = itemCreateForm()
-        context['item_form'] = form
-		
+            owner = User.objects.filter(email=request.user.email).first()
+            item.owner = owner
+            item.save()
+            
+            #form.owner = request.user
+            #form.save()
+            return redirect('/')
+        else:
+            return redirect('/create/')
+        
+    context = {'item_form': form}    
     return render(request,'itemManagement/createItem.html', context)
+
+def updateItem(request, pk):
+    item = Item.objects.get(id=pk)
+    form = UpdateItemForm(instance=item)
+    
+    if request.method == 'POST':
+        form = UpdateItemForm(request.POST,request.FILES,instance=item)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        
+    context = {'item_form': form}   
+    return render(request,'itemManagement/updateItem.html', context)
+
+def deleteItem(request,pk):    
+    item = Item.objects.get(id=pk)
+
+    if request.method == 'POST':
+        item.delete()
+        return redirect('/')
+    
+    context={'item': item}
+    return render(request,'itemManagement/delete.html',context)
+    
+            

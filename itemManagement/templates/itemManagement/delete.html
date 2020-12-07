@@ -1,0 +1,14 @@
+{% extends './base.html' %}
+{%block content%}
+<h1>Deleting Item Confirmation</h1>
+
+<p>Are you sure you want to delete "{{item.title}}"?</p>
+
+<a href="/"> <button type="cancel"> Cancel </button> </a>
+
+<form action="{% url 'itemDelete' item.id %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Confirm">
+</form>
+
+{% endblock content %}

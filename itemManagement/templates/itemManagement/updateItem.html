@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 {%block content%}
-<h1>Create Item Listing</h1>
+<h1>Update Item</h1>
 
 <form method="POST" enctype="multipart/form-data">
 {% csrf_token %}
@@ -19,7 +19,7 @@
         </p>
     {% endfor %}
 
-    <input type="submit" value="Add Item">
+    <input type="submit" value="Update Item">
 
 </form>
 

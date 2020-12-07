@@ -29,6 +29,8 @@ from authentication.views import(
 
 from itemManagement.views import(
     createItemView,
+    updateItem,
+    deleteItem,
 )
 
 urlpatterns = [
@@ -43,4 +45,6 @@ urlpatterns = [
     path('<int:pk>/comment/reply/', reply, name ='add_reply'),
     path('<int:pk>/like/', like, name = 'like_item'),
     path('create/',createItemView,name='itemCreate'),
+    path('update/<int:pk>/',updateItem,name='itemUpdate'),
+    path('delete/<int:pk>/',deleteItem,name='itemDelete'),
 ]

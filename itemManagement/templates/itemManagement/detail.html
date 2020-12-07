@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
 <section class="itemDetail">
+	{% if item.owner.email == user.email %}
+		<a href="{% url 'itemUpdate' item.pk %}"> <button> Update Item </button> </a>
+		<a href="{% url 'itemDelete' item.pk %}"> <button> Delete Item </button> </a>
+	{% endif %}
    <h1> Owner: {{item.owner }} <br> Item: {{ item.title }} </h1>
    <br>
    <img src="/static/authentication/{{item.filename}} " />
