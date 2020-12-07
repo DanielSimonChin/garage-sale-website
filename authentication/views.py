@@ -42,7 +42,8 @@ def comment(request, pk):
         comment = Comment.objects.create(item = item,author=request.user,text=text)
         if comment:
             comment.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            redirectString = '/' + str(pk) + '/' 
+            return redirect(redirectString)
         
         
     context['comment_form'] = form
@@ -59,10 +60,12 @@ def reply(request, pk):
     if form.is_valid():
         text = request.POST.get('text')
         comment = Comment.objects.get(id = pk)
+        item = Item.objects.get(comments = comment)
         reply = Reply.objects.create(comment = comment,author=request.user,text=text)
         if reply:
             reply.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            redirectString = '/' + str(item.id) + '/'
+            return redirect(redirectString)
         
         
     context['reply_form'] = form
