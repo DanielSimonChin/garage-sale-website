@@ -2,8 +2,11 @@
 {% block content %}
 <section class="content">
 	<section class="filter">
-		<h1> Filter: </h1>
+		<h1> Search: </h1>
 		<form method="GET">
+			<label for="search"> Search Title: </label> 
+			<input type="search" id="search" name="search" placeholder="Item title"/>
+		<h1> Filter: </h1>
             <input type="radio" id="recent" name="filter" value="recent" />
             <label for="recent"> Most recent </label>
             <input type="radio" id="oldest" name="filter" value="oldest" />
@@ -17,7 +20,7 @@
                 <label for="owned"> Owned item </label>
             {% endif %}
             <br /><br />
-            <input type="submit" value="Filter"/>
+            <input type="submit" value="Search"/>
         </form>
 	</section>
    {% if item_list %}

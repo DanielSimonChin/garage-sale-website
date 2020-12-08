@@ -22,20 +22,32 @@ class IndexView(generic.ListView):
     #return all the items in order of publication date
     def get_queryset(self):
         filter = self.request.GET.get('filter')
+        userSearch = self.request.GET.get('search')
+        
+        
         if filter == 'recent':
-            return Item.objects.order_by('-pub_date')
+            qs = Item.objects.order_by('-pub_date')
         elif filter == 'oldest':
-            return Item.objects.order_by('pub_date')
+            qs = Item.objects.order_by('pub_date')
         elif filter == 'popular':
             stringFilter = 'total_likes'
-            return Item.objects.annotate(like_count=Count('likes')).order_by('-like_count')
+            qs = Item.objects.annotate(like_count=Count('likes')).order_by('-like_count')
         elif filter == 'liked':
             user = self.request.user
-            return Item.objects.filter(likes = user)
+            qs = Item.objects.filter(likes = user)
         elif filter == 'owned':
             user = self.request.user
-            return Item.objects.filter(owner = user)
-        return Item.objects.order_by('-pub_date')
+            qs = Item.objects.filter(owner = user)
+        else:
+            qs = Item.objects.order_by('-pub_date')
+            
+            
+        if userSearch:
+            if len(userSearch) != 0:
+                qs = qs.filter(title__contains=userSearch)
+        
+        return qs
+        
       
 #The view for the detail's page of every item
 class DetailView(generic.DetailView):
