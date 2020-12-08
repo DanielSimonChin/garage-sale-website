@@ -31,6 +31,7 @@ from itemManagement.views import(
     createItemView,
     updateItem,
     deleteItem,
+    buyItem,
 )
 
 urlpatterns = [
@@ -47,4 +48,5 @@ urlpatterns = [
     path('create/',createItemView,name='itemCreate'),
     path('update/<int:pk>/',updateItem,name='itemUpdate'),
     path('delete/<int:pk>/',deleteItem,name='itemDelete'),
+    path('purchase/<int:pk>/',buyItem,name='itemPurchase'),
 ]

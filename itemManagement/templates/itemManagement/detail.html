@@ -3,8 +3,12 @@
 {% block content %}
 <section class="itemDetail">
 	{% if item.owner.email == user.email %}
+		<h2>You own this item</h2>
 		<a href="{% url 'itemUpdate' item.pk %}"> <button> Update Item </button> </a>
 		<a href="{% url 'itemDelete' item.pk %}"> <button> Delete Item </button> </a>
+		
+		{% else %}
+			<a href="{% url 'itemPurchase' item.pk %}"><button> Buy Item </button></a>
 	{% endif %}
    <h1> Owner: {{item.owner }} <br> Item: {{ item.title }} </h1>
    <br>

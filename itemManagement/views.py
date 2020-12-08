@@ -10,6 +10,8 @@ from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import itemCreateForm,UpdateItemForm
 from django.db.models import Count
+from django.contrib import messages
+
 
 # Create your views here.
 #The view for the index which contains all the listed items on the site with their title and image
@@ -89,4 +91,28 @@ def deleteItem(request,pk):
     context={'item': item}
     return render(request,'itemManagement/delete.html',context)
     
-            
+
+def buyItem(request,pk):
+    item = Item.objects.get(id=pk)
+    
+    buyer = request.user
+    if buyer.balance >= item.price:
+        #new owner's balance decreases since they bought a new item
+        buyer.balance = buyer.balance - item.price
+        
+        #The original owner's balance increases by the item's cost
+        oldOwner = item.owner
+        oldOwner.balance = oldOwner.balance + item.price
+        
+        #transfer ownership to the new owner of the item
+        item.owner = buyer
+        
+        buyer.save()
+        oldOwner.save()
+        item.save()
+        
+    else:
+        #Show the buyer that they do not have the funds to purchase this item
+        messages.info(request, 'Not enough funds')
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
