@@ -1,1 +1,1 @@
-web: gunicorn kijijMock.wsgi --log-file -
+web: gunicorn kijijiMock.wsgi --log-file -
