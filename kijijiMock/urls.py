@@ -16,15 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
+from blog.views import(
+    comment,
+    reply,
+    like,
+)
+
 from authentication.views import(
 	register,
     logout_view,
     login_view,
     account_view,
     password_view,
-    comment,
-    reply,
-    like,
 )
 
 from itemManagement.views import(
@@ -49,4 +52,5 @@ urlpatterns = [
     path('update/<int:pk>/',updateItem,name='itemUpdate'),
     path('delete/<int:pk>/',deleteItem,name='itemDelete'),
     path('purchase/<int:pk>/',buyItem,name='itemPurchase'),
+    
 ]

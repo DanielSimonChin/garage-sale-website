@@ -34,21 +34,6 @@ class UserAuthenticationForm(forms.ModelForm):
         if not authenticate(email = email, password = password):
             raise forms.ValidationError("Invalid login!")
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ( 'text',)
-        widgets = {
-            'text' : forms.Textarea(attrs={'class':'form-control'}),
-        }
-        
-class ReplyForm(forms.ModelForm):
-    class Meta:
-        model = Reply
-        fields = ( 'text',)
-        widgets = {
-            'text' : forms.Textarea(attrs={'class':'form-control'}),
-        }
         
         
         

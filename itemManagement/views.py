@@ -112,7 +112,7 @@ def buyItem(request,pk):
         item.save()
         
     else:
-        #Show the buyer that they do not have the funds to purchase this item
-        messages.info(request, 'Not enough funds')
+        context = {}
+        return render(request,'itemManagement/missingFunds.html',context)
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
