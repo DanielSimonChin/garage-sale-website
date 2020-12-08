@@ -72,6 +72,9 @@ def login_view(request):
    
 
 def account_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     context = {}
     if(request.method == 'POST'):
         form = AccountEditForm(request.POST,request.FILES,instance=request.user)
@@ -88,6 +91,9 @@ def account_view(request):
     return render(request,'authentication/account.html', context)
 
 def password_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     context = {}
     if(request.method == 'POST'):
         form = PasswordChangeForm(data=request.POST,user=request.user)

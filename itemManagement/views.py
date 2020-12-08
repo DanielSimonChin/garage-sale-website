@@ -47,6 +47,9 @@ class DetailView(generic.DetailView):
         return Item.objects.filter(pub_date__lte=timezone.now())
     
 def createItemView(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     form = itemCreateForm()
     if(request.method == 'POST'):
         form = itemCreateForm(request.POST,request.FILES)
@@ -68,6 +71,9 @@ def createItemView(request):
     return render(request,'itemManagement/createItem.html', context)
 
 def updateItem(request, pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     item = Item.objects.get(id=pk)
     form = UpdateItemForm(instance=item)
     
@@ -82,6 +88,9 @@ def updateItem(request, pk):
     return render(request,'itemManagement/updateItem.html', context)
 
 def deleteItem(request,pk):    
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     item = Item.objects.get(id=pk)
 
     if request.method == 'POST':
@@ -93,6 +102,9 @@ def deleteItem(request,pk):
     
 
 def buyItem(request,pk):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     item = Item.objects.get(id=pk)
     
     buyer = request.user
