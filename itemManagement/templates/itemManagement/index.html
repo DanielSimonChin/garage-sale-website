@@ -1,6 +1,25 @@
 {% extends "./base.html" %}
 {% block content %}
 <section class="content">
+	<section class="filter">
+		<h1> Filter: </h1>
+		<form method="GET">
+            <input type="radio" id="recent" name="filter" value="recent" />
+            <label for="recent"> Most recent </label>
+            <input type="radio" id="oldest" name="filter" value="oldest" />
+            <label for="oldest"> Oldest </label>
+            <input type="radio" id="popular" name="filter" value="popular" />
+            <label for="popular"> Most Popular </label>
+            {% if user.is_authenticated %}
+                <input type="radio" id="liked" name="filter" value="liked" />
+                <label for="liked"> Liked </label>
+                <input type="radio" id="owned" name="filter" value="owned" />
+                <label for="owned"> Owned item </label>
+            {% endif %}
+            <br /><br />
+            <input type="submit" value="Filter"/>
+        </form>
+	</section>
    {% if item_list %}
    {% for item in item_list %}
    <a href="{{ item.id }}/">
