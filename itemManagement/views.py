@@ -9,6 +9,7 @@ from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import itemCreateForm,UpdateItemForm
+from django.db.models import Count
 
 # Create your views here.
 #The view for the index which contains all the listed items on the site with their title and image
@@ -25,7 +26,7 @@ class IndexView(generic.ListView):
             return Item.objects.order_by('pub_date')
         elif filter == 'popular':
             stringFilter = 'total_likes'
-            return Item.objects.order_by('likes')
+            return Item.objects.annotate(like_count=Count('likes')).order_by('-like_count')
         elif filter == 'liked':
             user = self.request.user
             return Item.objects.filter(likes = user)
