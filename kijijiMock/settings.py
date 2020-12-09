@@ -143,7 +143,7 @@ USE_TZ = True
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = BASE_DIR /'authentication'/'static'/ 'authentication' #. os.path.join(BASE_DIR,'staticfiles')
 
-STATIC_URL = 'authentication/static/authentication'
+STATIC_URL = 'authentication/static/authentication/'
 
 
 
