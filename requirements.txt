@@ -1,6 +1,7 @@
 django
 Pillow
 gunicorn
+whitenoise
 django-heroku
 psycopg2-binary
 dj-database-url
