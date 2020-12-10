@@ -79,18 +79,23 @@ class User(AbstractBaseUser):
     #Define the user manager to the user model
     objects = MyUserManager()
     
+    #return user's full name
     def __str__(self):
         return self.first_name + " " + self.last_name
-        
+       
+    #return boolean if the user is admin
     def has_perm(self, perm, obj=None):
         return self.is_admin
     
+    #return boolean if the user has module permissions
     def has_module_perms(self, app_label):
         return True
     
+    #return only the name of the file
     def filename(self):
         return os.path.basename(self.avatar.name)
-    
+
+#The items that are created by users when creating website entries
 class Item(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -99,28 +104,38 @@ class Item(models.Model):
     price = models.DecimalField(max_digits=11, decimal_places=2)
     description = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(default=timezone.now)
+    
+    #return item title
     def __str__(self):
         return self.title
-        
+    
+    #return item like count
     def total_likes(self):
         return self.likes.count()
     
+    #return item image filename
     def filename(self):
         return os.path.basename(self.image.name)
 
+#The comments on an item entry
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, related_name="comments", on_delete=models.CASCADE)
     text = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(default=timezone.now)
+    
+    #return the comment's contents
     def __str__(self):
         return self.text
-    
+
+#The replies on a comment of an item
 class Reply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment , related_name="replies", on_delete=models.CASCADE)
     text = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(default=timezone.now)
+    
+    #return the reply content
     def __str__(self):
         return self.text
     

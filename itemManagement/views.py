@@ -12,8 +12,6 @@ from .forms import itemCreateForm,UpdateItemForm
 from django.db.models import Count
 from django.contrib import messages
 
-
-# Create your views here.
 #The view for the index which contains all the listed items on the site with their title and image
 class IndexView(generic.ListView):
     template_name = 'itemManagement/index.html'
@@ -24,7 +22,7 @@ class IndexView(generic.ListView):
         filter = self.request.GET.get('filter')
         userSearch = self.request.GET.get('search')
         
-        
+        #filter the index list depending on the selected filter choice.
         if filter == 'recent':
             qs = Item.objects.order_by('-pub_date')
         elif filter == 'oldest':
@@ -57,7 +55,8 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         #Excludes any items that aren't published yet.
         return Item.objects.filter(pub_date__lte=timezone.now())
-    
+
+#The view that appears whenever a user clicks on Sell item
 def createItemView(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -66,6 +65,7 @@ def createItemView(request):
     if(request.method == 'POST'):
         form = itemCreateForm(request.POST,request.FILES)
         
+        #If the form is valid, save it to the db
         if form.is_valid():
             item = form.save(commit=False)
             
@@ -73,8 +73,7 @@ def createItemView(request):
             item.owner = owner
             item.save()
             
-            #form.owner = request.user
-            #form.save()
+            #return to home page
             return redirect('/')
         else:
             return redirect('/create/')
@@ -82,10 +81,12 @@ def createItemView(request):
     context = {'item_form': form}    
     return render(request,'itemManagement/createItem.html', context)
 
+#The view for updating an existing item
 def updateItem(request, pk):
     if not request.user.is_authenticated:
         return redirect("login")
     
+    #get the selected item to update 
     item = Item.objects.get(id=pk)
     form = UpdateItemForm(instance=item)
     
@@ -93,12 +94,14 @@ def updateItem(request, pk):
         form = UpdateItemForm(request.POST,request.FILES,instance=item)
         
         if form.is_valid():
+            #save the item changes and return to home page
             form.save()
             return redirect('/')
         
     context = {'item_form': form}   
     return render(request,'itemManagement/updateItem.html', context)
 
+#The view for whenever a user wants to delete an item. Confirms if they wish to continue
 def deleteItem(request,pk):    
     if not request.user.is_authenticated:
         return redirect("login")
@@ -106,13 +109,14 @@ def deleteItem(request,pk):
     item = Item.objects.get(id=pk)
 
     if request.method == 'POST':
+        #delete the selected item and return to home page.
         item.delete()
         return redirect('/')
     
     context={'item': item}
     return render(request,'itemManagement/delete.html',context)
     
-
+#The function which processes a user's request to buy an item. Calculates if they have sufficient funds.
 def buyItem(request,pk):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -131,6 +135,7 @@ def buyItem(request,pk):
         #transfer ownership to the new owner of the item
         item.owner = buyer
         
+        #save the changes to the db
         buyer.save()
         oldOwner.save()
         item.save()
@@ -139,4 +144,5 @@ def buyItem(request,pk):
         context = {}
         return render(request,'itemManagement/missingFunds.html',context)
     
+    #return to the currently viewed item
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

@@ -11,8 +11,6 @@ from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 
-
-    
 #Function view for whenever the user clicks on Register nav item.
 def register(request):
     context = {}
@@ -30,25 +28,26 @@ def register(request):
             return redirect('/')
         else:
             context['registration_form'] = form
-    #
+    #If it is a GET request
     else:
         form = RegisterForm()
         context['registration_form'] = form
 		
-    
+    #display the html with the form
     return render(request,'authentication/register.html', context)
 
 
-
+#Logout of the authenticated account
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
+#The view for whenever the user clicks on the login button
 def login_view(request):
     context = {}
     user = request.user
     
+    #bring the user to the home page if authenticated
     if user.is_authenticated:
         return redirect('/')
     
@@ -58,9 +57,11 @@ def login_view(request):
         if form.is_valid():
             email = request.POST['email']
             password = request.POST['password']
+            #login the user with the credentials
             user = authenticate(email=email,password=password)
             
             if user:
+                #if the credentials are valid, bring login and bring them back to home
                 login(request,user)
                 return redirect('/')
     else:
@@ -70,7 +71,7 @@ def login_view(request):
     return render(request,'authentication/login.html', context)
  
    
-
+#The view for a user to edit his or her account
 def account_view(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -90,6 +91,7 @@ def account_view(request):
 		
     return render(request,'authentication/account.html', context)
 
+#The view for a user to edit his or her password
 def password_view(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -105,6 +107,7 @@ def password_view(request):
             
             return redirect('/')
         else:
+            #keep them at the password form if the password entered is invalid
             return redirect('/password/')
     else:
         form = PasswordChangeForm(user = request.user)
