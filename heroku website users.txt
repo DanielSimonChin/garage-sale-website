@@ -1,0 +1,35 @@
+Customers: 
+
+python1@hotmail.com
+pythonpassword1
+
+python2@hotmail.com
+pythonpassword2
+
+python3@hotmail.com
+pythonpassword3
+
+python4@hotmail.com
+pythonpassword4
+
+python5@hotmail.com
+pythonpassword5
+
+-----------------------
+
+Regular admins:
+
+admin1@hotmail.com
+pythonadmin1
+
+admin2@hotmail.com
+pythonadmin2
+
+-----------------------
+Super user:
+
+super@hotmail.com	
+super
+
+
+
