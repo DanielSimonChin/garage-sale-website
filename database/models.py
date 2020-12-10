@@ -68,7 +68,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     date_of_birth = models.DateField(max_length=8)
     balance = models.DecimalField(default=1000,max_digits=11, decimal_places=2)
-    avatar = models.FileField(null=True,blank=True,upload_to='authentication/static/authentication')
+    avatar = models.FileField(null=True,blank=True,upload_to='static/authentication')
     
     #Defines what filed is used to log in
     USERNAME_FIELD = 'email'
